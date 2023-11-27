@@ -1,4 +1,4 @@
-use std::ops::IndexMut;
+use codewars::move_zeros::{self};
 
 fn find_smallest_int(arr: &[i32]) -> i32 {
     // your code here
@@ -52,4 +52,5 @@ fn disemvowel(s: &str) -> String {
 
 fn main() {
     println!("{}", disemvowel("This website is for losers LOL!"));
+    move_zeros::move_zeros(&vec![]);
 }
