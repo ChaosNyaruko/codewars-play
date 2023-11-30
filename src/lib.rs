@@ -5,3 +5,4 @@ pub mod product_fib;
 pub mod bouncing_ball;
 pub mod solution;
 pub mod zeros;
+pub mod decompose;

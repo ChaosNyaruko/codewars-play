@@ -1,4 +1,5 @@
-use codewars::move_zeros::{self};
+use codewars::{move_zeros::{self}, decompose::{self, dfs}};
+use std::collections::HashMap;
 
 fn find_smallest_int(arr: &[i32]) -> i32 {
     // your code here
@@ -51,6 +52,10 @@ fn disemvowel(s: &str) -> String {
 }
 
 fn main() {
-    println!("{}", disemvowel("This website is for losers LOL!"));
-    move_zeros::move_zeros(&vec![]);
+    let mut memo: HashMap<(i64, i64), Option<Vec<i64>>> = HashMap::new();
+    if let Some(m) = dfs(87, 44, &mut memo) {
+        eprintln!("{m:?}");
+    } else {
+        panic!("whatsoever");
+    }
 }
