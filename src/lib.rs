@@ -8,3 +8,4 @@ pub mod zeros;
 pub mod decompose;
 pub mod choose_best_sum;
 pub mod rgb;
+pub mod snail;
