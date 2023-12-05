@@ -17,6 +17,73 @@
 // QUESTION = 24572
 // BOOKKEEPER = 10743
 
+
+fn other_list_position(word: &str) -> u128 {
+    use std::collections::HashMap;
+    let mut pos = 1;
+    let mut perm = 1;
+    let mut cnt = HashMap::<u8, u128>::new();
+    
+    for (i, c1) in word.bytes().rev().enumerate() {
+        *cnt.entry(c1).or_default() += 1;
+        for c2 in cnt.keys() {
+            if *c2 < c1 {
+                pos += perm * cnt[&c2] / cnt[&c1];
+            }
+        }
+        perm = perm * (i as u128 + 1) / cnt[&c1];
+    }
+    
+    pos
+}
+
+fn factorial(n: u128) -> u128 {
+    let mut res = 1;
+    for x in 1..=n {
+        res *= x;
+    }
+    res
+}
+
+fn list_position(word: &str) -> u128 {
+    use std::collections::BTreeMap;
+    if word.len() == 1 {
+        return 1;
+    }
+    let mut counter: BTreeMap<u8, usize> = BTreeMap::new();
+    for c in word.as_bytes() {
+        counter.entry(*c).and_modify(|c| *c = *c + 1).or_insert(1);
+    }
+    // Calc the number of _smaller_ permutations,
+    // Example: word DACB
+    // count(Axxx) + count(Cxxx) + count(Bxxx) is what we want.
+    let mut n = word.len() - 1;
+    let top = factorial(n.try_into().unwrap());
+
+
+    let x = word.bytes().nth(0).unwrap(); // word.len() is guaranteed to be at least 1.
+    let mut count = 0;
+    for k in counter.keys() {
+        if *k < x {
+            let mut bottom = 1;
+            for (y, c) in &counter {
+                let mut c = (*c).try_into().unwrap();
+                if y == k {
+                    if c == 1 {
+                        c = 1;
+                    } else {
+                        c -= 1;
+                    }
+                }
+                bottom *= factorial(c);
+            }
+            count += top / bottom;
+        }
+    }
+    count += list_position(&word[1..]);
+    count
+}
+
 fn naive_list_position(word: &str) -> u128 {
     let word =  String::from(word);
     let origin = word.as_bytes();
