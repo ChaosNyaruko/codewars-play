@@ -1,6 +1,10 @@
 use std::collections::HashMap;
 
-pub fn dfs(n: i64, last: i64, memo: &mut HashMap<(i64, i64), Option<Vec<i64>>>) -> Option<Vec<i64>> {
+pub fn dfs(
+    n: i64,
+    last: i64,
+    memo: &mut HashMap<(i64, i64), Option<Vec<i64>>>,
+) -> Option<Vec<i64>> {
     // eprintln!("calulating: {n}, {last}");
     // assert!(n >= 0);
     if n == 0 {

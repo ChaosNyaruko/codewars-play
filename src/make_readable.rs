@@ -11,9 +11,9 @@ fn make_readable(seconds: u32) -> String {
 #[cfg(test)]
 mod tests {
     use super::make_readable;
-    
+
     const ERR_MSG: &str = "\nYour result (left) did not match the expected output (right)";
-    
+
     fn dotest(s: u32, expected: &str) {
         assert_eq!(make_readable(s), expected, "{ERR_MSG} with seconds = {s}")
     }

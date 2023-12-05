@@ -7,7 +7,7 @@ where
     // let mut v: Vec<_> = sequence.into_iter().collect();
     // v.dedup();
     // return v;
-    // 
+    //
     let mut res: Vec<T::Item> = Vec::new();
     let mut iter = sequence.into_iter();
     while let Some(a) = iter.next() {

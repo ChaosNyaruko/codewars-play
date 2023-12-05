@@ -24,5 +24,5 @@ mod tests {
         assert_eq!(zeros(1000), 249);
         assert_eq!(zeros(100000), 24999);
         assert_eq!(zeros(1000000000), 249999998);
-    }    
+    }
 }

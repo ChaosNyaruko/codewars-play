@@ -1,4 +1,3 @@
-
 fn count_duplicates(text: &str) -> u32 {
     use std::collections::HashMap;
     // Your code goes here

@@ -17,13 +17,12 @@
 // QUESTION = 24572
 // BOOKKEEPER = 10743
 
-
 fn other_list_position(word: &str) -> u128 {
     use std::collections::HashMap;
     let mut pos = 1;
     let mut perm = 1;
     let mut cnt = HashMap::<u8, u128>::new();
-    
+
     for (i, c1) in word.bytes().rev().enumerate() {
         *cnt.entry(c1).or_default() += 1;
         for c2 in cnt.keys() {
@@ -33,7 +32,7 @@ fn other_list_position(word: &str) -> u128 {
         }
         perm = perm * (i as u128 + 1) / cnt[&c1];
     }
-    
+
     pos
 }
 
@@ -60,7 +59,6 @@ fn list_position(word: &str) -> u128 {
     let mut n = word.len() - 1;
     let top = factorial(n.try_into().unwrap());
 
-
     let x = word.bytes().nth(0).unwrap(); // word.len() is guaranteed to be at least 1.
     let mut count = 0;
     for k in counter.keys() {
@@ -85,7 +83,7 @@ fn list_position(word: &str) -> u128 {
 }
 
 fn naive_list_position(word: &str) -> u128 {
-    let word =  String::from(word);
+    let word = String::from(word);
     let origin = word.as_bytes();
     let mut word = Vec::<u8>::with_capacity(origin.len());
     for c in origin {
@@ -95,9 +93,9 @@ fn naive_list_position(word: &str) -> u128 {
     // eprintln!("{word:?}");
 
     let mut count = 1;
-    fn next_permutation(x: &mut[u8]) -> bool {
+    fn next_permutation(x: &mut [u8]) -> bool {
         let mut i = x.len() - 1;
-        while i > 0 && x[i] <= x[i-1] {
+        while i > 0 && x[i] <= x[i - 1] {
             i -= 1;
         }
         if i == 0 {
@@ -113,7 +111,7 @@ fn naive_list_position(word: &str) -> u128 {
         x.swap(i, pivot);
 
         // reverse the suffix
-        x[pivot+1..].reverse();
+        x[pivot + 1..].reverse();
         return false;
     }
 
@@ -135,26 +133,25 @@ fn naive_list_position(word: &str) -> u128 {
 #[cfg(test)]
 mod tests {
     use super::list_position;
-    
+
     const ERR_MSG: &str = "\nYour result (left) did not match the expected output (right)";
-    
+
     #[test]
     fn sample_tests() {
         let test_data = [
-            (                  "A", 1),
-            (               "ABAB", 2),
-            (               "AAAB", 1),
-            (               "BAAA", 4),
-            (               "YMYM", 5),
-            (           "QUESTION", 24572),
-            (         "BOOKKEEPER", 10743),
-      ("IMMUNOELECTROPHORETICALLY", 718393983731145698173),
+            ("A", 1),
+            ("ABAB", 2),
+            ("AAAB", 1),
+            ("BAAA", 4),
+            ("YMYM", 5),
+            ("QUESTION", 24572),
+            ("BOOKKEEPER", 10743),
+            ("IMMUNOELECTROPHORETICALLY", 718393983731145698173),
         ];
         for (word, expected) in test_data {
-            assert_eq!(list_position(word), 
+            assert_eq!(list_position(word),
                        expected,
                        "\nYour result (left) did not match the expected output (right) for the input: \"{word}\"");
         }
-        
     }
 }

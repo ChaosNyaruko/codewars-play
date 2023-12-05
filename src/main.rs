@@ -1,4 +1,7 @@
-use codewars::{move_zeros::{self}, decompose::{self, dfs}};
+use codewars::{
+    decompose::{self, dfs},
+    move_zeros::{self},
+};
 use std::collections::HashMap;
 
 fn find_smallest_int(arr: &[i32]) -> i32 {
