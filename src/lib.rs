@@ -12,3 +12,4 @@ pub mod solution;
 pub mod unique_in_order;
 pub mod zeros;
 pub mod exp_sum;
+pub mod hamming;
