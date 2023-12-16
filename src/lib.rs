@@ -14,3 +14,4 @@ pub mod zeros;
 pub mod exp_sum;
 pub mod hamming;
 pub mod get_pins;
+pub mod closest_pair;
