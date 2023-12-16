@@ -13,3 +13,4 @@ pub mod unique_in_order;
 pub mod zeros;
 pub mod exp_sum;
 pub mod hamming;
+pub mod get_pins;
