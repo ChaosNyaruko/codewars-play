@@ -18,6 +18,18 @@ fn exp_sum(n: u64) -> u64 {
     }
     (0..=n).map(|k| p(k as i64, n as i64, &mut memo)).sum()
 }
+fn _exp_sum(n: u64) -> u64 {
+    let n = n as usize;
+    let mut poly = vec![1; n + 1];
+
+    for i in 2..=n {
+        for j in i..=n {
+            poly[j] += poly[j - i];
+        }
+    }
+
+    poly[n]
+}
 
 #[cfg(test)]
 mod tests {
