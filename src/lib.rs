@@ -16,3 +16,4 @@ pub mod solution;
 pub mod sudoku;
 pub mod unique_in_order;
 pub mod zeros;
+pub mod calc;
