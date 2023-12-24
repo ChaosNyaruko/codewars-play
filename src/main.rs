@@ -2,6 +2,7 @@ use codewars::{
     decompose::{self, dfs},
     move_zeros::{self},
     sudoku::sudoku,
+    voted_calc::calc,
 };
 use std::collections::HashMap;
 
@@ -90,4 +91,5 @@ fn main() {
         puzzle, solution,
         "\nYour solution (left) did not match the correct solution (right)"
     );
+    println!("{}", calc("1+1"));
 }

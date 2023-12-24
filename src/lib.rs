@@ -1,4 +1,5 @@
 pub mod bouncing_ball;
+pub mod calc;
 pub mod choose_best_sum;
 pub mod closest_pair;
 pub mod count_duplicates;
@@ -15,4 +16,5 @@ pub mod snail;
 pub mod solution;
 pub mod sudoku;
 pub mod unique_in_order;
+pub mod voted_calc;
 pub mod zeros;
