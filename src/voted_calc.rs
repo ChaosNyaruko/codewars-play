@@ -1,6 +1,6 @@
 use std::iter::Peekable;
 
-fn calc(expr: &str) -> f64 {
+pub fn calc(expr: &str) -> f64 {
     let s = expr.replace(' ', "");
     eval(&mut s.chars().peekable())
 }
