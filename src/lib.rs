@@ -10,6 +10,8 @@ pub mod hamming;
 pub mod list_position;
 pub mod make_readable;
 pub mod move_zeros;
+pub mod prime_sieve_stream;
+pub mod prime_stream;
 pub mod product_fib;
 pub mod rgb;
 pub mod snail;
