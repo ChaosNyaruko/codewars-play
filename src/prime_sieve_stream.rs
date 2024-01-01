@@ -5,6 +5,8 @@ A basic library for finding primes, providing a basic Iterator over all primes. 
 
 The simplest usage is simply to create an `Iterator`:
 
+Added by me: refer to https://en.wikipedia.org/wiki/Wheel_factorization for algorithm details.
+
 ```
 use primes::{Sieve, PrimeSet};
 
@@ -367,6 +369,33 @@ impl Index<usize> for TrialDivision {
     }
 }
 
+fn stream() -> impl Iterator<Item = u32> {
+    MySieveIter {
+        inner: Sieve::new(),
+        n: 0,
+    }
+}
+
+struct MySieveIter {
+    inner: Sieve,
+    n: usize,
+}
+
+impl Iterator for MySieveIter {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        while self.n >= self.inner.primes.len() {
+            self.inner.expand()
+        }
+        self.n += 1;
+
+        let m = self.inner.primes[self.n - 1] as u32;
+
+        Some(m)
+    }
+}
+
 impl<'a, P: PrimeSet> Iterator for PrimeSetIter<'a, P> {
     type Item = u64;
     fn next(&mut self) -> Option<u64> {
@@ -452,25 +481,11 @@ pub fn is_prime(n: u64) -> bool {
     firstfac(n) == n
 }
 
-struct Xx {
-    inner: Sieve,
-}
-
-impl Iterator for Xx {
-    type Item = u32;
-    fn next(&mut self) -> Option<Self::Item> {
-        None
-    }
-}
-fn stream() -> impl Iterator<Item = u64> {
-    Sieve::new().iter()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    fn test_segment(start: u64, numbers: [u64; 10]) {
+    fn test_segment(start: u32, numbers: [u32; 10]) {
         let mut prime_iterator = stream();
         for _ in 0..start {
             prime_iterator.next();
