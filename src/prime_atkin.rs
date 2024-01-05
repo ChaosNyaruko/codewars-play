@@ -1,5 +1,128 @@
+use std::collections::HashMap;
+use std::mem;
+struct MyPrime {
+    start: u32,
+    end: u32,
+
+    stream: Vec<u32>,
+    cursor: usize,
+}
+
+impl Iterator for MyPrime {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.cursor == self.stream.len() {
+            self.extend_to(10000);
+        }
+        self.cursor += 1;
+        Some(self.stream[self.cursor - 1])
+    }
+}
+
+impl MyPrime {
+    fn extend_to(&mut self, more: u32) {
+        self.start = self.end;
+        self.end = self.start + more;
+        let mut sieve = Vec::with_capacity(self.end as usize - self.start as usize);
+        sieve.resize(self.end as usize - self.start as usize, false);
+        const START: usize = 1;
+
+        let LIMIT = self.end as usize;
+        let OFFSET = self.start as usize;
+        for xu in START..LIMIT as usize {
+            let x = xu as u32;
+            if x * x >= LIMIT as u32 {
+                break;
+            }
+            for yu in START..LIMIT {
+                let y: u32 = yu as u32;
+                if y * y > LIMIT as u32 {
+                    break;
+                }
+
+                // Condition 1
+                let n: u32 = (4 * x * x) + (y * y);
+                if n >= self.start && n < LIMIT as u32 && (n % 12 == 1 || n % 12 == 5) {
+                    sieve[n as usize - OFFSET] ^= true;
+                }
+                if n == 25 {
+                    eprintln!(
+                        "c1 {x} {y}, sieve[{}]={}",
+                        n as usize - OFFSET,
+                        sieve[n as usize - OFFSET]
+                    );
+                }
+
+                // Condition 2
+                let n: u32 = (3 * x * x) + (y * y);
+                if n >= self.start as u32 && n < LIMIT as u32 && n % 12 == 7 {
+                    sieve[n as usize - OFFSET] ^= true;
+                }
+                if n == 25 {
+                    eprintln!(
+                        "c2 {x} {y}, sieve[{}]={}",
+                        n as usize - OFFSET,
+                        sieve[n as usize - OFFSET]
+                    );
+                }
+
+                // Condition 3
+                if 3 * x * x > y * y {
+                    let n: u32 = (3 * x * x) - (y * y);
+                    if x > y && n >= self.start && n < LIMIT as u32 && n % 12 == 11 {
+                        sieve[n as usize - OFFSET] ^= true
+                    }
+                    if n == 25 {
+                        eprintln!(
+                            "c3 {x} {y}, sieve[{}]={}",
+                            n as usize - OFFSET,
+                            sieve[n as usize - OFFSET]
+                        );
+                    }
+                }
+            }
+        }
+
+        // Mark all multiples of squares as non-prime
+        let mut r: u32 = f32::sqrt(self.start as f32) as u32;
+        loop {
+            if r * r >= LIMIT as u32 {
+                break;
+            }
+
+            if true || sieve[r as usize - OFFSET] {
+                let mut i: u32 = r * r;
+                loop {
+                    if i >= LIMIT as u32 {
+                        break;
+                    }
+
+                    sieve[i as usize - OFFSET] = false;
+
+                    i += r * r;
+                }
+            }
+
+            r += 1;
+        }
+
+        // Print primes contained within sieve's index.
+        self.stream = Vec::new();
+        self.cursor = 0;
+        for a in self.start..self.end {
+            if sieve[a as usize - OFFSET] {
+                self.stream.push(a);
+            }
+        }
+        if self.stream.len() == 0 {
+            self.extend_to(more);
+        }
+    }
+}
+
 fn sieve_of_atkin() {
-    const LIMIT: usize = (29 - 1) as usize;
+    const LIMIT: usize = 30;
     let mut sieve: [bool; LIMIT + 1] = [false; LIMIT + 1];
 
     // 2 and 3 are known to be prime
@@ -39,17 +162,26 @@ fn sieve_of_atkin() {
             if n <= LIMIT as i32 && (n % 12 == 1 || n % 12 == 5) {
                 sieve[n as usize] ^= true;
             }
+            if n == 25 {
+                eprintln!("c1 {x} {y}, sieve[{}]={}", n, sieve[n as usize]);
+            }
 
             // Condition 2
             let n: i32 = (3 * x * x) + (y * y);
             if n <= LIMIT as i32 && n % 12 == 7 {
                 sieve[n as usize] ^= true;
             }
+            if n == 25 {
+                eprintln!("c2 {x} {y}, sieve[{}]={}", n, sieve[n as usize]);
+            }
 
             // Condition 3
             let n: i32 = (3 * x * x) - (y * y);
             if x > y && n <= LIMIT as i32 && n % 12 == 11 {
                 sieve[n as usize] ^= true
+            }
+            if n == 25 {
+                eprintln!("c3 {x} {y}, sieve[{}]={}", n, sieve[n as usize]);
             }
         }
     }
@@ -84,9 +216,6 @@ fn sieve_of_atkin() {
         }
     }
 }
-
-use std::collections::HashMap;
-use std::mem;
 
 #[derive(Debug, Clone)]
 struct Primes {
@@ -160,9 +289,15 @@ impl Iterator for Primes {
     }
 }
 
-fn stream() -> impl Iterator<Item = usize> {
+fn stream() -> impl Iterator<Item = u32> {
     // Primes::new()
-    primal::Primes::all()
+    // primal::Primes::all()
+    MyPrime {
+        start: 1,
+        end: 24,
+        stream: vec![2, 3, 5, 7, 11, 13, 17, 19, 23],
+        cursor: 0,
+    }
 }
 // fn main() {
 //     let mut primes = Primes::new();
@@ -175,7 +310,12 @@ fn stream() -> impl Iterator<Item = usize> {
 mod tests {
     use super::*;
 
-    fn test_segment(start: usize, numbers: [usize; 10]) {
+    #[test]
+    fn raw_atkin() {
+        sieve_of_atkin();
+    }
+
+    fn test_segment(start: usize, numbers: [u32; 10]) {
         let mut prime_iterator = stream();
         for _ in 0..start {
             prime_iterator.next();
