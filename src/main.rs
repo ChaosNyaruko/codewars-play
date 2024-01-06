@@ -93,3 +93,13 @@ fn main() {
     );
     println!("{}", calc("1+1"));
 }
+
+fn likes(names: &[&str]) -> String {
+    match names {
+        [] => format!("no one likes this"),
+        [a] => format!("{} likes this", a),
+        [a, b] => format!("{} and {} like this", a, b),
+        [a, b, c] => format!("{}, {} and {} like this", a, b, c),
+        [a, b, rest @ ..] => format!("{}, {} and {} others like this", a, b, rest.len()),
+    }
+}
