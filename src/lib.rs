@@ -1,15 +1,18 @@
+#![feature(test)]
 pub mod bouncing_ball;
 pub mod calc;
 pub mod choose_best_sum;
 pub mod closest_pair;
 pub mod count_duplicates;
 pub mod decompose;
+pub mod duplicate_encode;
 pub mod exp_sum;
 pub mod get_pins;
 pub mod hamming;
 pub mod list_position;
 pub mod make_readable;
 pub mod move_zeros;
+pub mod prime_atkin;
 pub mod prime_sieve_stream;
 pub mod prime_stream;
 pub mod product_fib;
@@ -20,4 +23,3 @@ pub mod sudoku;
 pub mod unique_in_order;
 pub mod voted_calc;
 pub mod zeros;
-pub mod prime_atkin;

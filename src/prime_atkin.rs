@@ -341,10 +341,12 @@ mod tests {
 
     #[bench]
     fn try_stream(b: &mut test::Bencher) {
-        let x = stream();
-        for i in 0..200000 {
-            _ = x.next().unwrap()
-        }
+        b.iter(|| {
+            let mut x = stream();
+            for i in 0..200 {
+                _ = x.next().unwrap();
+            }
+        });
     }
     #[test]
     fn raw_atkin() {
