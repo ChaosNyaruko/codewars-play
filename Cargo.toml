@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 itertools = "0.12.0"
 primal = "0.2"
+is_prime = "2.0.9"
