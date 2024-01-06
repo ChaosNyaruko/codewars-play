@@ -1,6 +1,8 @@
+extern crate test;
 use is_prime::*;
 use std::collections::HashMap;
 use std::mem;
+use test::Bencher;
 struct MyPrime {
     start: u32,
     end: u32,
@@ -23,8 +25,10 @@ impl Iterator for MyPrime {
 
 impl MyPrime {
     fn extend_to(&mut self, more: u32) {
+        // eprintln!("calling extend to {}, {}", self.start, self.end);
         self.start = self.end;
         self.end = self.start + more;
+        // eprintln!("[A]calling extend to {}, {}", self.start, self.end);
         let mut sieve = Vec::with_capacity(self.end as usize - self.start as usize);
         sieve.resize(self.end as usize - self.start as usize, false);
         const START: usize = 1;
@@ -120,7 +124,7 @@ impl MyPrime {
                         break;
                     }
 
-                    sieve[i as usize] = false;
+                    sieve[i as usize - OFFSET] = false;
 
                     i += r * r;
                 }
@@ -335,6 +339,13 @@ mod tests {
 
     use super::*;
 
+    #[bench]
+    fn try_stream(b: &mut test::Bencher) {
+        let x = stream();
+        for i in 0..200000 {
+            _ = x.next().unwrap()
+        }
+    }
     #[test]
     fn raw_atkin() {
         sieve_of_atkin();
@@ -344,6 +355,7 @@ mod tests {
             if is_prime(x.into()) {
                 eprintln!("mine: {i}: {}", x)
             } else {
+                // [FIXED]"fail to sieve at 146: 841(not a prime) instead of 853"
                 unreachable!("[NOT]mine: {i}: {}", x)
             }
         }
