@@ -326,6 +326,10 @@ fn stream() -> impl Iterator<Item = u32> {
         cursor: 0,
     }
 }
+
+fn primal_stream() -> impl Iterator<Item = usize> {
+    primal::Primes::all()
+}
 // fn main() {
 //     let mut primes = Primes::new();
 //     for _i in 0..99_999 {
@@ -339,6 +343,17 @@ mod tests {
 
     use super::*;
 
+    #[bench]
+    fn try_primal_stream(b: &mut test::Bencher) {
+        b.iter(|| {
+            let mut x = primal_stream();
+            //            test prime_atkin::tests::try_primal_stream ... bench:  21,448,679 ns/iter (+/- 685,915)
+            //            On M1 mac mini
+            for i in 0..50_000_00 {
+                _ = x.next().unwrap();
+            }
+        });
+    }
     #[bench]
     fn try_stream(b: &mut test::Bencher) {
         b.iter(|| {

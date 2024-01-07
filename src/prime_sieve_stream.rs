@@ -516,4 +516,15 @@ mod tests {
             [7927, 7933, 7937, 7949, 7951, 7963, 7993, 8009, 8011, 8017],
         );
     }
+    extern crate test;
+    use test::Bencher;
+    #[bench]
+    fn try_stream(b: &mut test::Bencher) {
+        b.iter(|| {
+            let mut x = stream();
+            for i in 0..50000 {
+                _ = x.next().unwrap();
+            }
+        });
+    }
 }
