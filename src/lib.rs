@@ -25,3 +25,4 @@ pub mod voted_calc;
 pub mod zeros;
 pub mod algebraic_lists;
 pub mod xo;
+pub mod nb_year;
