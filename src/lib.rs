@@ -24,3 +24,4 @@ pub mod unique_in_order;
 pub mod voted_calc;
 pub mod zeros;
 pub mod algebraic_lists;
+pub mod xo;
